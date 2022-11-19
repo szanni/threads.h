@@ -82,6 +82,9 @@ Configuration macro:
 #define TSS_DTOR_ITERATIONS 1
 
 /*---------------------------- types ----------------------------*/
+typedef void (*tss_dtor_t)(void*);
+typedef int (*thrd_start_t)(void*);
+
 typedef CONDITION_VARIABLE cnd_t;
 
 typedef HANDLE thrd_t;
@@ -98,6 +101,23 @@ typedef struct once_flag_t {
 } once_flag;
 #endif
 
+/*-------------------- enumeration constants --------------------*/
+enum {
+	mtx_plain     = 0,
+	mtx_try       = 1,
+	mtx_timed     = 2,
+	mtx_recursive = 4
+};
+
+enum {
+	thrd_success = 0, // succeeded
+	thrd_timedout,    // timed out
+	thrd_error,       // failed
+	thrd_busy,        // resource busy
+	thrd_nomem        // out of memory
+};
+
+/*-------------------------- functions --------------------------*/
 
 static inline void * tss_get(tss_t key);
 static inline void thrd_yield(void);

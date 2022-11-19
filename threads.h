@@ -2,6 +2,15 @@
  * C11 <threads.h> emulation library
  *
  * (C) Copyright yohhoy 2012.
+ * (C) Copyright by authors:
+ *
+ * José Fonseca
+ * Emil Velikov
+ * Nicolai Hähnle
+ * James Park
+ * Jason Ekstrand
+ * Yonggang Luo
+ *
  * Distributed under the Boost Software License, Version 1.0.
  *
  * Permission is hereby granted, free of charge, to any person or organization

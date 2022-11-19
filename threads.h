@@ -10,6 +10,7 @@
  * James Park
  * Jason Ekstrand
  * Yonggang Luo
+ * Angelo Haller
  *
  * Distributed under the Boost Software License, Version 1.0.
  *
@@ -35,6 +36,9 @@
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
+#ifndef THEADS_H_MSVC
+#define THEADS_H_MSVC
 
 #include <assert.h>
 #include <limits.h>
@@ -474,4 +478,6 @@ tss_set(tss_t key, void *val)
 {
     return TlsSetValue(key, val) ? thrd_success : thrd_error;
 }
+
+#endif // THEADS_H_MSVC
 

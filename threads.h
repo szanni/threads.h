@@ -67,6 +67,7 @@ Configuration macro:
 #define EMULATED_THREADS_TSS_DTOR_SLOTNUM 64  // see TLS_MINIMUM_AVAILABLE
 
 #include <windows.h>
+#include <time.h>
 
 // check configuration
 #if defined(EMULATED_THREADS_USE_NATIVE_CALL_ONCE) && (_WIN32_WINNT < 0x0600)
@@ -80,6 +81,10 @@ Configuration macro:
 #define ONCE_FLAG_INIT {0}
 #endif
 #define TSS_DTOR_ITERATIONS 1
+
+#ifndef TIME_UTC
+#define TIME_UTC 1
+#endif
 
 /*---------------------------- types ----------------------------*/
 typedef void (*tss_dtor_t)(void*);
@@ -99,6 +104,15 @@ typedef INIT_ONCE once_flag;
 typedef struct once_flag_t {
     volatile LONG status;
 } once_flag;
+#endif
+
+/* Visual Studio 2015 and higher define struct timespec */
+#if defined(_MSC_VER) && (_MSC_VER < 1900)
+struct timespec
+{
+	time_t tv_sec;
+	long   tv_nsec;
+};
 #endif
 
 /*-------------------- enumeration constants --------------------*/
@@ -124,6 +138,9 @@ static inline void thrd_yield(void);
 static inline int mtx_trylock(mtx_t *mtx);
 static inline int mtx_lock(mtx_t *mtx);
 static inline int mtx_unlock(mtx_t *mtx);
+#if (defined(_MSC_VER) && (_MSC_VER < 1900)) || defined(__MINGW32__)
+static inline int timespec_get(struct timespec *ts, int base);
+#endif
 
 /*
 Implementation limits:
@@ -462,6 +479,21 @@ thrd_yield(void)
     SwitchToThread();
 }
 
+/*-------------------- 7.25.7 Time functions --------------------*/
+// 7.25.6.1
+#if (defined(_MSC_VER) && (_MSC_VER < 1900)) || defined(__MINGW32__)
+static inline int
+timespec_get(struct timespec *ts, int base)
+{
+    if (!ts) return 0;
+    if (base == TIME_UTC) {
+        ts->tv_sec = time(NULL);
+        ts->tv_nsec = 0;
+        return base;
+    }
+    return 0;
+}
+#endif
 
 /*----------- 7.25.6 Thread-specific storage functions -----------*/
 // 7.25.6.1

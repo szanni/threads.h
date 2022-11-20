@@ -110,25 +110,25 @@ typedef struct once_flag_t {
 #if defined(_MSC_VER) && (_MSC_VER < 1900)
 struct timespec
 {
-	time_t tv_sec;
-	long   tv_nsec;
+    time_t tv_sec;
+    long   tv_nsec;
 };
 #endif
 
 /*-------------------- enumeration constants --------------------*/
 enum {
-	mtx_plain     = 0,
-	mtx_try       = 1,
-	mtx_timed     = 2,
-	mtx_recursive = 4
+    mtx_plain     = 0,
+    mtx_try       = 1,
+    mtx_timed     = 2,
+    mtx_recursive = 4
 };
 
 enum {
-	thrd_success = 0, // succeeded
-	thrd_timedout,    // timed out
-	thrd_error,       // failed
-	thrd_busy,        // resource busy
-	thrd_nomem        // out of memory
+    thrd_success = 0,
+    thrd_timedout,
+    thrd_error,
+    thrd_busy,
+    thrd_nomem
 };
 
 /*-------------------------- functions --------------------------*/

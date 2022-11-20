@@ -68,9 +68,6 @@ Configuration macro:
 #endif
 #define TSS_DTOR_ITERATIONS 1
 
-// FIXME: temporary non-standard hack to ease transition
-#define _MTX_INITIALIZER_NP {(PCRITICAL_SECTION_DEBUG)-1, -1, 0, 0, 0, 0}
-
 /*---------------------------- types ----------------------------*/
 typedef CONDITION_VARIABLE cnd_t;
 
